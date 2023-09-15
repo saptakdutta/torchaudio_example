@@ -30,7 +30,7 @@ def batched_dot_bmm(a, b):
 
 #%% Start with CPU benchmark
 # Input for benchmarking
-x = torch.randn(10000, 1024, device='cpu')
+x = torch.randn(100000, 1024, device='cpu')
 # Ensure that both functions compute the same output
 assert batched_dot_mul_sum(x, x).allclose(batched_dot_bmm(x, x))
 
@@ -44,6 +44,7 @@ t1 = benchmark.Timer(
     setup='from __main__ import batched_dot_bmm',
     globals={'x': x})
 
+print('Benchmarking WSL single threaded CPU performance:')
 print(t0.timeit(100))
 print(t1.timeit(100))
 
@@ -52,7 +53,7 @@ num_threads = torch.get_num_threads()
 print(f'Benchmarking on {num_threads} threads')
 
 # Input for benchmarking
-x = torch.randn(10000, 1024, device='cpu')
+x = torch.randn(100000, 1024, device='cpu')
 # Ensure that both functions compute the same output
 assert batched_dot_mul_sum(x, x).allclose(batched_dot_bmm(x, x))
 
@@ -72,12 +73,13 @@ t1 = benchmark.Timer(
     label='Multithreaded batch dot',
     sub_label='Implemented using bmm')
 
+print('Benchmarking WSL multi-threaded CPU performance:')
 print(t0.timeit(100))
 print(t1.timeit(100))
 
 #%% Now benchmark with CUDA (GPU)
 # Input for benchmarking
-x = torch.randn(10000, 1024, device=device)
+x = torch.randn(100000, 1024, device=device)
 # Ensure that both functions compute the same output
 assert batched_dot_mul_sum(x, x).allclose(batched_dot_bmm(x, x))
 
@@ -92,6 +94,7 @@ t1 = benchmark.Timer(
     globals={'x': x})
 
 # Run only once since benchmark module does warm-up for us
+print('Benchmarking WSL GPU (CUDA) performance:')
 print(t0.timeit(100))
 print(t1.timeit(100))
 
