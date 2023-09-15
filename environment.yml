@@ -1,0 +1,36 @@
+# to spped thing up install libmamba solver as follows:
+# 1. conda update -n base conda
+# 2. conda install -n base conda-libmamba-solver
+# to create this venv run: conda env create -f environment.yml --solver=libmamba || mamba env create -f environment.yml
+# to destroy this venv run: conda remove -n torchaudio_example --all || mamba remove -n torchaudio_example --all
+name: torchaudio_example
+channels:
+- nodefaults
+- conda-forge
+- pytorch
+- nvidia
+dependencies:
+- python
+# Conda dependencies go here
+- pandas
+- numpy
+- matplotlib
+- h5py
+- nvidia::cudatoolkit
+- pytorch::pytorch
+- pytorch::torchvision
+- pytorch::torchaudio
+- pytorch::pytorch-cuda=11.8
+- conda-forge::pytorch-lightning
+- pip
+# Pip dependencies go here
+- pip:
+# Install the basic pip goodies for REPL, code formatting, type checking/hints, pretty printing loops & tables etc
+  - black
+  - mypy
+  - tqdm
+  - ipykernel
+  - tabulate
+# Project related dependencies go here
+  - datetime
+  - scikit-learn
